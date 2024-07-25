@@ -54,9 +54,11 @@
     }
     .button-container button {
       padding: 10px;
-      border: none;
+      border: 2px solid #000; /* Contorno preto */
       border-radius: 5px;
       cursor: pointer;
+      background-color: #F0E68C; /* Cor de fundo bege/amarelo claro */
+      font-weight: bold; /* Negrito */
     }
     .hidden {
       display: none;
@@ -114,9 +116,8 @@
         "3. <b>Finalize a Compra</b>: Confirme o pagamento e pronto! Sua compra está feita.<br><br>",
         "Fácil, rápido e sem filas! Aproveite! 😊<br><br>",
         "🔍 <b>Dicas Adicionais</b>:<br>",
-        "- Se não encontrar o produto na lista ou não conseguir escanear, digite o nome do produto para procurar o preço.<br>",
         "- Se ainda precisar de ajuda, entre em contato pelo WhatsApp <a href='https://wa.me/5542984441701' target='_blank'>clicando aqui</a>.<br><br>",
-        "Para mais detalhes, assista ao vídeo explicativo <a href='https://youtu.be/h3NN4pLGBfU' target='_blank'>clicando aqui</a>."
+        "Para mais detalhes, assista ao vídeo explicativo <a href='https://youtu.be/h3NN4pLGBfU' target='_blank'>clicando aqui</a>.<br><br>"
       ];
 
       let delay = 0;
@@ -124,6 +125,25 @@
         setTimeout(() => addMessage(paragraph, 'bot'), delay);
         delay += 1500;
       });
+
+      // Adicionar botão no final das informações
+      setTimeout(() => {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'button-container';
+
+        const buttonProduto = document.createElement('button');
+        buttonProduto.textContent = 'Saber o preço de um produto';
+        buttonProduto.onclick = () => {
+          addMessage('Qual produto você gostaria de saber o preço?', 'bot');
+          document.getElementById('userInput').disabled = false;
+          document.getElementById('sendButton').disabled = false;
+        };
+        buttonContainer.appendChild(buttonProduto);
+
+        const chatbox = document.getElementById('chatbox');
+        chatbox.appendChild(buttonContainer);
+        chatbox.scrollTop = chatbox.scrollHeight;  // Rolar para o final do chatbox
+      }, delay);
     }
 
     async function sendMessage(userInput = null) {
