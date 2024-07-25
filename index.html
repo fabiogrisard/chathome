@@ -58,6 +58,9 @@
       border-radius: 5px;
       cursor: pointer;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -65,8 +68,8 @@
     <img src="https://raw.githubusercontent.com/fabiogrisard/chat-homestore/main/logo.jpeg" alt="Logo" class="logo">
     <div class="chatbox" id="chatbox"></div>
     <div class="input-box">
-      <input type="text" id="userInput" placeholder="Digite sua dúvida aqui">
-      <button onclick="sendMessage()">Enviar</button>
+      <input type="text" id="userInput" placeholder="Digite sua dúvida aqui" disabled>
+      <button id="sendButton" onclick="sendMessage()" disabled>Enviar</button>
     </div>
   </div>
 
@@ -92,7 +95,11 @@
 
       const buttonProduto = document.createElement('button');
       buttonProduto.textContent = 'Preço de um Produto';
-      buttonProduto.onclick = () => sendMessage('Preço de um Produto');
+      buttonProduto.onclick = () => {
+        addMessage('Qual produto você gostaria de saber o preço?', 'bot');
+        document.getElementById('userInput').disabled = false;
+        document.getElementById('sendButton').disabled = false;
+      };
       buttonContainer.appendChild(buttonProduto);
 
       chatbox.appendChild(buttonContainer);
@@ -100,18 +107,23 @@
     }
 
     function showTotemInfo() {
-      const totemInfo = `
-        🛒 <b>Totem de Autoatendimento HomeStore</b><br><br>
-        1. <b>Escaneie os Produtos</b>: Passe os produtos no leitor de código de barras ou selecione-os na lista do totem.<br>
-        2. <b>Escolha o Pagamento</b>: Selecione como você quer pagar (cartão de crédito, débito, etc.).<br>
-        3. <b>Finalize a Compra</b>: Confirme o pagamento e pronto! Sua compra está feita.<br><br>
-        Fácil, rápido e sem filas! Aproveite! 😊<br><br>
-        🔍 <b>Dicas Adicionais</b>:<br>
-        - Se não encontrar o produto na lista ou não conseguir escanear, digite o nome do produto para procurar o preço.<br>
-        - Se ainda precisar de ajuda, entre em contato pelo WhatsApp <a href="https://wa.me/5542984441701" target="_blank">clicando aqui</a>.<br><br>
-        Para mais detalhes, assista ao vídeo explicativo <a href="https://youtu.be/h3NN4pLGBfU" target="_blank">clicando aqui</a>.
-      `;
-      addMessage(totemInfo, 'bot');
+      const totemInfo = [
+        "🛒 <b>Totem de Autoatendimento HomeStore</b><br><br>",
+        "1. <b>Escaneie os Produtos</b>: Passe os produtos no leitor de código de barras ou selecione-os na lista do totem.<br>",
+        "2. <b>Escolha o Pagamento</b>: Selecione como você quer pagar (cartão de crédito, débito, etc.).<br>",
+        "3. <b>Finalize a Compra</b>: Confirme o pagamento e pronto! Sua compra está feita.<br><br>",
+        "Fácil, rápido e sem filas! Aproveite! 😊<br><br>",
+        "🔍 <b>Dicas Adicionais</b>:<br>",
+        "- Se não encontrar o produto na lista ou não conseguir escanear, digite o nome do produto para procurar o preço.<br>",
+        "- Se ainda precisar de ajuda, entre em contato pelo WhatsApp <a href='https://wa.me/5542984441701' target='_blank'>clicando aqui</a>.<br><br>",
+        "Para mais detalhes, assista ao vídeo explicativo <a href='https://youtu.be/h3NN4pLGBfU' target='_blank'>clicando aqui</a>."
+      ];
+
+      let delay = 0;
+      totemInfo.forEach(paragraph => {
+        setTimeout(() => addMessage(paragraph, 'bot'), delay);
+        delay += 1500;
+      });
     }
 
     async function sendMessage(userInput = null) {
@@ -153,6 +165,8 @@
 
       // Limpar o campo de entrada
       inputBox.value = '';
+      inputBox.disabled = true;
+      document.getElementById('sendButton').disabled = true;
     }
 
     // Adicionar saudação inicial
