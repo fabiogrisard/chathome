@@ -87,7 +87,7 @@
 
       const buttonSistema = document.createElement('button');
       buttonSistema.textContent = 'Informação sobre o Totem';
-      buttonSistema.onclick = () => sendMessage('Informação sobre o Totem');
+      buttonSistema.onclick = () => showTotemInfo();
       buttonContainer.appendChild(buttonSistema);
 
       const buttonProduto = document.createElement('button');
@@ -97,6 +97,21 @@
 
       chatbox.appendChild(buttonContainer);
       chatbox.scrollTop = chatbox.scrollHeight;  // Rolar para o final do chatbox
+    }
+
+    function showTotemInfo() {
+      const totemInfo = `
+        🛒 <b>Totem de Autoatendimento HomeStore</b><br><br>
+        1. <b>Escaneie os Produtos</b>: Passe os produtos no leitor de código de barras ou selecione-os na lista do totem.<br>
+        2. <b>Escolha o Pagamento</b>: Selecione como você quer pagar (cartão de crédito, débito, etc.).<br>
+        3. <b>Finalize a Compra</b>: Confirme o pagamento e pronto! Sua compra está feita.<br><br>
+        Fácil, rápido e sem filas! Aproveite! 😊<br><br>
+        🔍 <b>Dicas Adicionais</b>:<br>
+        - Se não encontrar o produto na lista ou não conseguir escanear, digite o nome do produto para procurar o preço.<br>
+        - Se ainda precisar de ajuda, entre em contato pelo WhatsApp <a href="https://wa.me/5542984441701" target="_blank">clicando aqui</a>.<br><br>
+        Para mais detalhes, assista ao vídeo explicativo <a href="https://youtu.be/h3NN4pLGBfU" target="_blank">clicando aqui</a>.
+      `;
+      addMessage(totemInfo, 'bot');
     }
 
     async function sendMessage(userInput = null) {
