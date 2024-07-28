@@ -188,13 +188,12 @@
           return;
         }
 
-        const result = await response.json();  // Processar a resposta como JSON
-        console.log('Resposta recebida do webhook:', result);
+        const text = await response.text();  // Processar a resposta como texto
+        console.log('Resposta recebida do webhook:', text);
 
         // Confirmar com o usuário se o produto está correto
-        const content = result[0].message.content;
-        addMessage(`Você quis dizer "${content}"?`, 'bot');
-        addConfirmationButtons(content);
+        addMessage(`Você quis dizer "${text}"?`, 'bot');
+        addConfirmationButtons(text);
 
       } catch (error) {
         console.error('Erro ao enviar mensagem:', error);
