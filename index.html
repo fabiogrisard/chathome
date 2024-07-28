@@ -184,6 +184,7 @@
 
         if (!response.ok) {
           console.error('Falha ao enviar mensagem para o webhook do n8n');
+          addMessage('Erro ao enviar mensagem. Tente novamente mais tarde.', 'bot');
           return;
         }
 
