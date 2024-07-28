@@ -188,18 +188,13 @@
           return;
         }
 
-        const text = await response.text();  // Processar a resposta como texto
-        console.log('Resposta recebida do webhook:', text);
+        const result = await response.json();  // Processar a resposta como JSON
+        console.log('Resposta recebida do webhook:', result);
 
         // Confirmar com o usuário se o produto está correto
-        try {
-          const result = JSON.parse(text);
-          addMessage(`Você quis dizer "${result.produto}"?`, 'bot');
-          addConfirmationButtons(result.produto);
-        } catch (e) {
-          console.error('Erro ao processar a resposta do webhook:', e);
-          addMessage('Erro ao processar a resposta do servidor. Tente novamente mais tarde.', 'bot');
-        }
+        const content = result[0].message.content;
+        addMessage(`Você quis dizer "${content}"?`, 'bot');
+        addConfirmationButtons(content);
 
       } catch (error) {
         console.error('Erro ao enviar mensagem:', error);
