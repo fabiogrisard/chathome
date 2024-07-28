@@ -76,6 +76,20 @@
   </div>
 
   <script>
+    const produtos = [
+      { descricao: "CAFÉ VÁCUO TRAD. 3 CORAÇÕES 500G", preco: "RR$ 21,90" },
+      { descricao: "ANTITRANSPIRANTE ABOVE WOMEN LADY 48H 150ML", preco: "RR$ 10,70" },
+      { descricao: "DESODORANTE AERO ABOVE 150ML/90G SPORT", preco: "RR$ 10,70" },
+      { descricao: "BISCOITO AGUIA CREME CRACKER", preco: "RR$ 6,90" },
+      { descricao: "CERVEJA BRAHMA LATA 350ML", preco: "RR$ 4,50" },
+      { descricao: "CERVEJA ORIGINAL PILSEN LN 300ML", preco: "RR$ 4,90" },
+      { descricao: "CERVEJA PILSEN ANTARCTICA ORIGINAL LATA 350ML", preco: "RR$ 4,90" },
+      { descricao: "CERVEJA AMSTEL CAIXA 12UN 350ML", preco: "RR$ 50,90" },
+      { descricao: "CERVEJA AMSTEL LATA 350ML", preco: "RR$ 4,40" },
+      { descricao: "FARINHA DE TRIGO ANACONDA 1KG", preco: "RR$ 7,60" },
+      { descricao: "AGUA TONICA ANTARCTICA LATA ZERO 350ML", preco: "RR$ 4,20" }
+    ];
+
     function addMessage(content, className) {
       const chatbox = document.getElementById('chatbox');
       const message = document.createElement('div');
@@ -173,11 +187,12 @@
           return;
         }
 
-        const text = await response.text();  // Processar a resposta como texto
-        console.log('Resposta recebida do webhook:', text);
+        const result = await response.json();  // Processar a resposta como JSON
+        console.log('Resposta recebida do webhook:', result);
 
-        // Adicionar resposta do bot ao chatbox usando innerHTML
-        addMessage(text, 'bot');
+        // Confirmar com o usuário se o produto está correto
+        addMessage(`Você quis dizer "${result.produto}"?`, 'bot');
+        addConfirmationButtons(result.produto);
 
       } catch (error) {
         console.error('Erro ao enviar mensagem:', error);
@@ -187,6 +202,45 @@
       inputBox.value = '';
       inputBox.disabled = true;
       document.getElementById('sendButton').disabled = true;
+    }
+
+    function addConfirmationButtons(produto) {
+      const chatbox = document.getElementById('chatbox');
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'button-container';
+
+      const buttonSim = document.createElement('button');
+      buttonSim.textContent = 'Sim';
+      buttonSim.onclick = () => {
+        handleProductConfirmation(produto, true);
+      };
+      buttonContainer.appendChild(buttonSim);
+
+      const buttonNao = document.createElement('button');
+      buttonNao.textContent = 'Não';
+      buttonNao.onclick = () => {
+        handleProductConfirmation(produto, false);
+      };
+      buttonContainer.appendChild(buttonNao);
+
+      chatbox.appendChild(buttonContainer);
+      chatbox.scrollTop = chatbox.scrollHeight;  // Rolar para o final do chatbox
+    }
+
+    function handleProductConfirmation(produto, confirmed) {
+      if (confirmed) {
+        const produtoEncontrado = produtos.find(p => p.descricao.toLowerCase() === produto.toLowerCase());
+        if (produtoEncontrado) {
+          setTimeout(() => addMessage(`O preço do produto "${produtoEncontrado.descricao}" é ${produtoEncontrado.preco}.`, 'bot'), 1500);
+          setTimeout(() => addMessage(`Chave Pix para pagamento: 12345678900`, 'bot'), 3000);
+        } else {
+          setTimeout(() => addMessage(`Desculpe, não encontramos o produto "${produto}".`, 'bot'), 1500);
+        }
+      } else {
+        setTimeout(() => addMessage('Por favor, digite o nome do produto novamente.', 'bot'), 1500);
+        document.getElementById('userInput').disabled = false;
+        document.getElementById('sendButton').disabled = false;
+      }
     }
 
     // Adicionar saudação inicial
