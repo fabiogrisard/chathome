@@ -154,7 +154,6 @@
         };
         buttonContainer.appendChild(buttonProduto);
 
-        const chatbox = document.getElementById('chatbox');
         chatbox.appendChild(buttonContainer);
         chatbox.scrollTop = chatbox.scrollHeight;  // Rolar para o final do chatbox
       }, delay);
@@ -234,15 +233,66 @@
         const produtoEncontrado = produtos.find(p => p.descricao.toLowerCase() === produto.toLowerCase());
         if (produtoEncontrado) {
           setTimeout(() => addMessage(`O preço do produto "${produtoEncontrado.descricao}" é ${produtoEncontrado.preco}.`, 'bot'), 1500);
-          setTimeout(() => addMessage(`Chave Pix para pagamento: <b>12345678900</b>`, 'bot'), 3000);
+          setTimeout(() => {
+            addMessage(`Chave Pix para pagamento: <b>51207860000131</b>`, 'bot');
+            setTimeout(() => {
+              addMessage('Você gostaria de pesquisar outro produto ou obter instruções sobre o totem?', 'bot');
+              addSearchOrInstructionsButtons();
+            }, 1500);
+          }, 3000);
         } else {
           setTimeout(() => addMessage(`Desculpe, não encontramos o produto "${produto}".`, 'bot'), 1500);
+          setTimeout(() => {
+            addMessage('Você gostaria de pesquisar outro produto?', 'bot');
+            addSearchAgainButton();
+          }, 3000);
         }
       } else {
         addMessage('Por favor, digite o nome do produto novamente.', 'bot');
         document.getElementById('userInput').disabled = false;
         document.getElementById('sendButton').disabled = false;
       }
+    }
+
+    function addSearchAgainButton() {
+      const chatbox = document.getElementById('chatbox');
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'button-container';
+
+      const buttonPesquisarOutro = document.createElement('button');
+      buttonPesquisarOutro.textContent = 'Pesquisar outro produto';
+      buttonPesquisarOutro.onclick = () => {
+        document.getElementById('userInput').disabled = false;
+        document.getElementById('sendButton').disabled = false;
+        addMessage('Qual produto você gostaria de saber o preço?', 'bot');
+      };
+      buttonContainer.appendChild(buttonPesquisarOutro);
+
+      chatbox.appendChild(buttonContainer);
+      chatbox.scrollTop = chatbox.scrollHeight;  // Rolar para o final do chatbox
+    }
+
+    function addSearchOrInstructionsButtons() {
+      const chatbox = document.getElementById('chatbox');
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'button-container';
+
+      const buttonPesquisarOutro = document.createElement('button');
+      buttonPesquisarOutro.textContent = 'Pesquisar outro produto';
+      buttonPesquisarOutro.onclick = () => {
+        document.getElementById('userInput').disabled = false;
+        document.getElementById('sendButton').disabled = false;
+        addMessage('Qual produto você gostaria de saber o preço?', 'bot');
+      };
+      buttonContainer.appendChild(buttonPesquisarOutro);
+
+      const buttonInstrucoes = document.createElement('button');
+      buttonInstrucoes.textContent = 'Instruções sobre o Totem';
+      buttonInstrucoes.onclick = () => showTotemInfo();
+      buttonContainer.appendChild(buttonInstrucoes);
+
+      chatbox.appendChild(buttonContainer);
+      chatbox.scrollTop = chatbox.scrollHeight;  // Rolar para o final do chatbox
     }
 
     // Adicionar saudação inicial
