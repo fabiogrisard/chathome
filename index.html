@@ -234,12 +234,12 @@
         const produtoEncontrado = produtos.find(p => p.descricao.toLowerCase() === produto.toLowerCase());
         if (produtoEncontrado) {
           setTimeout(() => addMessage(`O preço do produto "${produtoEncontrado.descricao}" é ${produtoEncontrado.preco}.`, 'bot'), 1500);
-          setTimeout(() => addMessage(`Chave Pix para pagamento: 12345678900`, 'bot'), 3000);
+          setTimeout(() => addMessage(`Chave Pix para pagamento: <b>12345678900</b>`, 'bot'), 3000);
         } else {
           setTimeout(() => addMessage(`Desculpe, não encontramos o produto "${produto}".`, 'bot'), 1500);
         }
       } else {
-        setTimeout(() => addMessage('Por favor, digite o nome do produto novamente.', 'bot'), 1500);
+        addMessage('Por favor, digite o nome do produto novamente.', 'bot');
         document.getElementById('userInput').disabled = false;
         document.getElementById('sendButton').disabled = false;
       }
